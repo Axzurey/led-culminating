@@ -43,9 +43,14 @@ r2 = customtkinter.CTkRadioButton(
     master=root, text="Spiral", command=set_pattern, variable=selected_pattern, value=2
 )
 
+r3 = customtkinter.CTkRadioButton(
+    master=root, text="Raindrops", command=set_pattern, variable=selected_pattern, value=3
+)
+
 r0.place(relx=.01, rely=.1)
 r1.place(relx=.01, rely=0.15)
 r2.place(relx=.01, rely=0.2)
+r3.place(relx=.01, rely=0.25)
 
 CONTROL_CONVERT = [
     0b100,
@@ -114,10 +119,34 @@ def generateSpiral():
     o2 = o[::-1]
     return *o, *o2
 
+def generateRaindrops():
+    out = []
+    initX = [5, 3, 7, 2, 6, 0, 4, 1]
+
+    for x0 in initX:
+
+        for y in range(7):
+            p = [
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [1, 1, 1, 1, 1, 1, 1, 1]
+            ]
+
+            p[y][x0] = 1;
+            for _ in range(3):
+                out.append(p)
+    return out
+
 patterns = [
     generateChecker(),
     generatePulsingSquares(),
-    generateSpiral()
+    generateSpiral(),
+    generateRaindrops()
 ]
 
 pattern = generateChecker()
@@ -131,7 +160,7 @@ def p():
             if not isPlaying: break
             decode(patternLine)
             setY(-1);
-            time.sleep(1 / 100);
+            time.sleep(1 / 2000);
 
 thread = threading.Thread(target=p, daemon=True)
 thread.start();
